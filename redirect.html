@@ -11,17 +11,30 @@
     <p dir="rtl">تم مسح QR Code. سيتم تحويلك تلقائيًا...</p>
 
     <script>
-        // استخراج المتغيرات من الرابط
+    // Extract realLink and fakeLink from the query parameters
         var urlParams = new URLSearchParams(window.location.search);
         var realLink = urlParams.get('realLink');
+        var fakeLink = urlParams.get('fakeLink');
 
-        // التحقق من أن الرابط الحقيقي موجود، ثم إعادة التوجيه تلقائياً
-        if (realLink) {
-            // Decode and redirect to the real link
-            window.location.href = decodeURIComponent(realLink);
-        } else {
-            document.body.innerHTML += "<p dir='rtl' style='color:red;'>خطأ: لم يتم العثور على الرابط الحقيقي!</p>";
+        if (!realLink) {
+            alert("خطأ: لم يتم العثور على الرابط الحقيقي!");
+            return;
         }
+
+        // Update the fake link text
+        document.getElementById('fakeLink').innerText = fakeLink;
+
+        // Set the href for the fake link
+        document.getElementById('fakeLink').setAttribute('href', realLink);
+
+        // Add the click event to redirect
+        document.getElementById('fakeLink').addEventListener('click', function(event) {
+            event.preventDefault();
+            var userConfirmed = confirm("هل ترغب في الانتقال إلى الرابط الفعلي؟");
+            if (userConfirmed) {
+                window.location.href = realLink;
+            }
+        });
     </script>
 
 </body>

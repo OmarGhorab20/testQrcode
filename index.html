@@ -37,47 +37,48 @@
     <a id="qrLink" href="#" target="_blank" style="display:none;">اضغط هنا للانتقال</a>
 
     <script>
-        document.getElementById("linkForm").addEventListener("submit", function(event) {
-            event.preventDefault();
-            
-            // الحصول على المدخلات
-            var realLink = document.getElementById("linkInput").value;
-            var fakeLink = document.getElementById("linkNameInput").value;
-            
-            // مسح QR Code القديم
-            var qrElement = document.getElementById("qrcode");
-            qrElement.innerHTML = "";
+      document.getElementById("linkForm").addEventListener("submit", function(event) {
+        event.preventDefault();
+        
+        // الحصول على المدخلات
+        var realLink = document.getElementById("linkInput").value;
+        var fakeLink = document.getElementById("linkNameInput").value;
+        
+        // مسح QR Code القديم
+        var qrElement = document.getElementById("qrcode");
+        qrElement.innerHTML = "";
 
-            // إنشاء QR Code باستخدام الرابط الوهمي (النص فقط)
-            QRCode.toDataURL('https://your-username.github.io/your-repo/redirect.html?realLink=' + encodeURIComponent(realLink) + '&fakeLink=' + encodeURIComponent(fakeLink), { errorCorrectionLevel: 'H' }, function (error, url) {
-                if (error) {
-                    console.error("Error generating QR Code:", error);
-                    return;
+        // إنشاء QR Code باستخدام الرابط الوهمي (النص فقط)
+        QRCode.toDataURL('https://omarghorab20.github.io/testQrcode/redirect.html?realLink=' + encodeURIComponent(realLink) + '&fakeLink=' + encodeURIComponent(fakeLink), { errorCorrectionLevel: 'H' }, function (error, url) {
+            if (error) {
+                console.error("Error generating QR Code:", error);
+                return;
+            }
+
+            // إنشاء صورة من الـ URL المولد
+            var img = new Image();
+            img.src = url;
+            img.alt = "QR Code";
+            img.style.cursor = "pointer"; // إظهار اليد عند مرور الفأرة
+            qrElement.appendChild(img);
+
+            // إضافة حدث عند النقر على صورة الـ QR Code
+            img.addEventListener("click", function() {
+                // عرض نافذة تأكيد قبل التوجه للرابط الأصلي
+                var userConfirmed = confirm("هل تريد الانتقال إلى الصفحة المطلوبة؟");
+                if (userConfirmed) {
+                    window.open(realLink, "_blank");
                 }
-
-                // إنشاء صورة من الـ URL المولد
-                var img = new Image();
-                img.src = url;
-                img.alt = "QR Code";
-                img.style.cursor = "pointer"; // إظهار اليد عند مرور الفأرة
-                qrElement.appendChild(img);
-
-                // إضافة حدث عند النقر على صورة الـ QR Code
-                img.addEventListener("click", function() {
-                    // عرض نافذة تأكيد قبل التوجه للرابط الأصلي
-                    var userConfirmed = confirm("هل تريد الانتقال إلى الصفحة المطلوبة؟");
-                    if (userConfirmed) {
-                        window.open(realLink, "_blank");
-                    }
-                });
-
-                // إضافة الرابط الذي يظهر أسفل الـ QR Code
-                var qrLink = document.getElementById("qrLink");
-                qrLink.href = realLink;  // استخدام الرابط الأصلي
-                qrLink.innerHTML = fakeLink;  // تعيين اسم الرابط
-                qrLink.style.display = "inline-block";  // إظهار الرابط أسفل QR Code
             });
+
+            // إضافة الرابط الذي يظهر أسفل الـ QR Code
+            var qrLink = document.getElementById("qrLink");
+            qrLink.href = realLink;  // استخدام الرابط الأصلي
+            qrLink.innerHTML = fakeLink;  // تعيين اسم الرابط
+            qrLink.style.display = "inline-block";  // إظهار الرابط أسفل QR Code
         });
+    });
+
     </script>
 
 </body>
