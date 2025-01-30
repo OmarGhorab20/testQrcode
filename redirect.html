@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>التحويل</title>
+</head>
+<body>
+
+    <h2 dir="rtl">التحويل إلى الرابط الحقيقي</h2>
+    <p dir="rtl">تم مسح QR Code. سيتم تحويلك تلقائيًا...</p>
+
+    <script>
+        // استخراج المتغيرات من الرابط
+        var urlParams = new URLSearchParams(window.location.search);
+        var realLink = urlParams.get('realLink');
+
+        // التحقق من أن الرابط الحقيقي موجود، ثم إعادة التوجيه تلقائياً
+        if (realLink) {
+            // Decode and redirect to the real link
+            window.location.href = decodeURIComponent(realLink);
+        } else {
+            document.body.innerHTML += "<p dir='rtl' style='color:red;'>خطأ: لم يتم العثور على الرابط الحقيقي!</p>";
+        }
+    </script>
+
+</body>
+</html>
