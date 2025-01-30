@@ -4,27 +4,29 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>التحويل إلى الرابط الحقيقي</title>
+    <script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js"></script>
+    <script>
+        window.onload = function() {
+            const params = new URLSearchParams(window.location.search);
+            const realLink = params.get('realLink');
+            const fakeLink = params.get('fakeLink');
+
+            if (!realLink) {
+                document.body.innerHTML = "<h1>خطأ: لم يتم العثور على الرابط الحقيقي!</h1>";
+                return;
+            }
+
+            // Displaying the message before redirect
+            document.body.innerHTML = "<h1>تم مسح QR Code. سيتم تحويلك تلقائيًا...</h1>";
+
+            // Redirecting after 3 seconds
+            setTimeout(function() {
+                window.location.href = decodeURIComponent(realLink);
+            }, 3000);
+        };
+    </script>
 </head>
 <body>
-    <h1>التحويل إلى الرابط الحقيقي</h1>
-    <p>تم مسح QR Code. سيتم تحويلك تلقائيًا...</p>
-
-    <script>
-        // Get the real link and fake link from the URL
-        const params = new URLSearchParams(window.location.search);
-        const realLink = decodeURIComponent(params.get('realLink'));
-        const fakeLink = decodeURIComponent(params.get('fakeLink'));
-
-        // Check if the real link is valid
-        if (realLink) {
-            // Redirect to the real link after 3 seconds
-            setTimeout(function() {
-                window.location.href = realLink;
-            }, 3000);
-        } else {
-            // Show an error message if no real link is found
-            document.body.innerHTML = "<h1>خطأ: لم يتم العثور على الرابط الحقيقي!</h1>";
-        }
-    </script>
+    <!-- The content will be updated dynamically by JavaScript -->
 </body>
 </html>
