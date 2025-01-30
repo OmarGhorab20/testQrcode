@@ -3,39 +3,28 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>التحويل</title>
+    <title>التحويل إلى الرابط الحقيقي</title>
 </head>
 <body>
-
-    <h2 dir="rtl">التحويل إلى الرابط الحقيقي</h2>
-    <p dir="rtl">تم مسح QR Code. سيتم تحويلك تلقائيًا...</p>
+    <h1>التحويل إلى الرابط الحقيقي</h1>
+    <p>تم مسح QR Code. سيتم تحويلك تلقائيًا...</p>
 
     <script>
-    // Extract realLink and fakeLink from the query parameters
-        var urlParams = new URLSearchParams(window.location.search);
-        var realLink = urlParams.get('realLink');
-        var fakeLink = urlParams.get('fakeLink');
+        // Get the real link and fake link from the URL
+        const params = new URLSearchParams(window.location.search);
+        const realLink = decodeURIComponent(params.get('realLink'));
+        const fakeLink = decodeURIComponent(params.get('fakeLink'));
 
-        if (!realLink) {
-            alert("خطأ: لم يتم العثور على الرابط الحقيقي!");
-            return;
-        }
-
-        // Update the fake link text
-        document.getElementById('fakeLink').innerText = fakeLink;
-
-        // Set the href for the fake link
-        document.getElementById('fakeLink').setAttribute('href', realLink);
-
-        // Add the click event to redirect
-        document.getElementById('fakeLink').addEventListener('click', function(event) {
-            event.preventDefault();
-            var userConfirmed = confirm("هل ترغب في الانتقال إلى الرابط الفعلي؟");
-            if (userConfirmed) {
+        // Check if the real link is valid
+        if (realLink) {
+            // Redirect to the real link after 3 seconds
+            setTimeout(function() {
                 window.location.href = realLink;
-            }
-        });
+            }, 3000);
+        } else {
+            // Show an error message if no real link is found
+            document.body.innerHTML = "<h1>خطأ: لم يتم العثور على الرابط الحقيقي!</h1>";
+        }
     </script>
-
 </body>
 </html>
