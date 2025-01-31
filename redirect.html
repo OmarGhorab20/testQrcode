@@ -4,29 +4,33 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>التحويل إلى الرابط الحقيقي</title>
-    <script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js"></script>
-    <script>
-        window.onload = function() {
-            const params = new URLSearchParams(window.location.search);
-            const realLink = params.get('realLink');
-            const fakeLink = params.get('fakeLink');
-
-            if (!realLink) {
-                document.body.innerHTML = "<h1>خطأ: لم يتم العثور على الرابط الحقيقي!</h1>";
-                return;
-            }
-
-            // Displaying the message before redirect
-            document.body.innerHTML = "<h1>تم مسح QR Code. سيتم تحويلك تلقائيًا...</h1>";
-
-            // Redirecting after 3 seconds
-            setTimeout(function() {
-                window.location.href = decodeURIComponent(realLink);
-            }, 3000);
-        };
-    </script>
 </head>
 <body>
-    <!-- The content will be updated dynamically by JavaScript -->
+
+    <h1>اضغط على الرابط للمتابعة:</h1>
+    <p><a id="fakeLink" href="#" style="color: blue; text-decoration: underline;"></a></p>
+
+    <script>
+        const params = new URLSearchParams(window.location.search);
+        const realLink = params.get('realLink');
+        const fakeLink = params.get('fakeLink');
+
+        if (!realLink || !fakeLink) {
+            document.body.innerHTML = "<h1>خطأ: لم يتم العثور على الرابط</h1>";
+        } else {
+            const linkElement = document.getElementById("fakeLink");
+            linkElement.textContent = fakeLink;
+            linkElement.href = "#"; 
+
+            linkElement.addEventListener("click", function(event) {
+                event.preventDefault();
+                var userConfirmed = confirm("هل تريد الانتقال إلى الصفحة المطلوبة؟");
+                if (userConfirmed) {
+                    window.location.href = decodeURIComponent(realLink);
+                }
+            });
+        }
+    </script>
+
 </body>
 </html>
